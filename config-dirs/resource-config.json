@@ -1,0 +1,13 @@
+{
+  "resources" : {
+    "includes" : [ {
+      "pattern" : "\\QMETA-INF/graal.kotlin_module\\E"
+    }, {
+      "pattern" : "\\Qlogback.xml\\E"
+    }, {
+      "pattern" : "\\Qbootstrap.yml\\E"
+    } ],
+    "excludes" : [ ]
+  },
+  "bundles" : [ ]
+}

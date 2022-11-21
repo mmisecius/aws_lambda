@@ -1,0 +1,14 @@
+micronaut:
+  application:
+    name: graal
+  config-client:
+    enabled: true
+
+
+aws:
+  client:
+    system-manager:
+      parameterstore:
+        enabled: true
+        root-hierarchy-path: /e-invoicing/
+

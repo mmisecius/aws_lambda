@@ -1,0 +1,6 @@
+applicationType: function
+defaultPackage: mis055
+testFramework: junit
+sourceLanguage: kotlin
+buildTool: gradle_kotlin
+features: [annotation-api, app-name, aws-lambda, aws-lambda-custom-runtime, aws-parameter-store, graalvm, gradle, http-client, jackson-databind, junit, kotlin, kotlin-build, logback, micronaut-build, readme, shade, yaml]
