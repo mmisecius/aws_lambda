@@ -1,40 +1,8 @@
-# use aws linux2 with graalvm 11 as a base
-#FROM 482506734317.dkr.ecr.eu-central-1.amazonaws.com/einvoicing-graalvm-arm64-11-base:latest AS builder
-FROM public.ecr.aws/j1v3l8o0/graalvm-arm64-11-pub:latest AS builder
-
-#ARG MAIN_CLASS=mis055.BookLambdaRuntime
-ARG MAIN_CLASS=aaa
-# eu.ionity.einvoice.commons.runtime.GraalVMRuntime
+FROM mm-native-builder-arm64v8:latest
 
 WORKDIR /project
 
-RUN mkdir /project/app
-COPY build/docker/main/layers/libs /project/app/libs
-COPY build/docker/main/layers/classes /project/app/classes
-COPY build/docker/main/layers/resources /project/app/resources
-COPY build/docker/main/layers/application.jar /project/app/application.jar
-RUN mkdir /project/app/config-dirs
-COPY config-dirs /project/app/config-dirs/generateResourcesConfigFile
-#COPY config-dirs/generateResourcesConfigFile /project/app/config-dirs/generateResourcesConfigFile
+COPY build/libs/graal-0.1-all.jar /project/application.jar
+#COPY build/docker/main/layers/application.jar /project/application.jar
 
-#RUN native-image -cp /project/app/libs/*.jar:/project/app/resources:/project/app/application.jar --no-fallback -H:Name=application -H:ConfigurationFileDirectories=/project/app/config-dirs/generateResourcesConfigFile -H:Class=$MAIN_CLASS
-RUN touch /project/app/application.bin
-
-FROM amazonlinux:latest
-WORKDIR /project
-
-RUN mkdir /project/function
-RUN yum install -y zip
-COPY --from=builder /project/app/application.bin /project/function/native_app.bin
-
-# creating bootstrap file
-RUN echo "#!/bin/sh" >> bootstrap \
-    && echo "set -euo pipefail" >> bootstrap \
-    && echo "./project/function/native_app.bin $_HANDLER -XX:MaximumHeapSizePercent=80 -Dio.netty.allocator.numDirectArenas=0 -Dio.netty.noPreferDirect=true -Djava.library.path=$(pwd)" >> /project/function/bootstrap
-RUN chmod 755 /project/function/bootstrap
-RUN chmod 755 /project/function/native_app.bin
-
-RUN touch aaa.txt
-RUN zip -j function.zip /project/function/bootstrap /project/function/native_app.bin
-RUN ls -lisa
-ENTRYPOINT ["/project/function/native_app.bin"]
+#ENTRYPOINT ["/project/function/native_app.bin"]

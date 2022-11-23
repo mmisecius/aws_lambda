@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.allopen") version "1.6.10"
     id("io.micronaut.application") version "3.3.2"
 //    id("io.micronaut.library") version "3.3.2"
+//    id("com.github.johnrengelman.shadow") version "7.1.2"
 
 }
 
@@ -30,18 +31,20 @@ dependencies {
     implementation("io.micronaut.aws:micronaut-aws-parameter-store")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("jakarta.annotation:jakarta.annotation-api")
-    runtimeOnly("ch.qos.logback:logback-classic")
 
     // logging
     // logging
-    api("org.apache.logging.log4j:log4j-core:2.17.2")
-    api("org.slf4j:slf4j-api:1.7.36")
-    api("com.amazonaws:aws-lambda-java-log4j2:1.5.1") // aws logging bridge
-    api("com.amazonaws:aws-java-sdk-stepfunctions:1.12.238")
-    api("org.apache.logging.log4j:log4j-core:2.17.2")
-    api("org.apache.logging.log4j:log4j-api:2.17.2")
-    api("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
-    api("org.apache.logging.log4j:log4j-layout-template-json:2.17.2")
+
+//    implementation("io.microlam:slf4j-simple-lambda:2.0.3_1")
+
+    runtimeOnly("com.amazonaws:aws-lambda-java-log4j2:1.5.1") // aws logging bridge
+    implementation("org.slf4j:slf4j-api:1.7.36")
+    implementation("org.slf4j:log4j-over-slf4j:2.0.4")
+    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
+//    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
+//    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
+//    implementation("org.apache.logging.log4j:log4j-layout-template-json:2.17.2")
+    runtimeOnly("ch.qos.logback:logback-classic")
 
     // json
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -57,7 +60,7 @@ dependencies {
 
 
 application {
-    mainClass.set("mis055.BookLambdaRuntime")
+    mainClass.set("mis055.runtime.GraalVMRuntime")
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("11")
@@ -84,3 +87,7 @@ micronaut {
         annotations("mis055.*")
     }
 }
+
+//tasks.shadowJar {
+//    transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer::class.java)
+//}

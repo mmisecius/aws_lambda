@@ -2,7 +2,7 @@ micronaut:
   application:
     name: graal
   config-client:
-    enabled: true
+    enabled: false
 
 
 aws:

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<Configuration packages="com.amazonaws.services.lambda.runtime.log4j2">-->
+<Configuration>
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Lambda" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+    </Appenders>
+<!--    <Appenders>-->
+<!--        <Lambda name="Lambda">-->
+<!--            <JsonTemplateLayout eventTemplateUri="classpath:JsonLayout.json">-->
+<!--            </JsonTemplateLayout>-->
+<!--        </Lambda>-->
+<!--    </Appenders>-->
+    <Loggers>
+        <Logger level="DEBUG" name="mis055"/>
+        <Root level="INFO">
+            <AppenderRef ref="Lambda"/>
+        </Root>
+    </Loggers>
+</Configuration>

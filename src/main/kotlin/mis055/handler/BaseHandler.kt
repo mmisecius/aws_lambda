@@ -23,12 +23,10 @@ import java.time.LocalDateTime
 import java.util.UUID
 import kotlin.collections.set
 
-abstract class BaseHandler<T : Any, R : Any> : FunctionInitializer, RequestStreamHandler {
+abstract class BaseHandler<T : Any, R : Any>(private val applicationContext: ApplicationContext)  : RequestStreamHandler {
 
-    constructor() : super()
-    constructor(applicationContext: ApplicationContext) : super(applicationContext)
 
-    protected val mapper: ObjectMapper = super.applicationContext.getBean(ObjectMapper::class.java)
+    protected val mapper: ObjectMapper = applicationContext.getBean(ObjectMapper::class.java)
     private val requestType: JavaType = this.mapper.typeFactory.constructType(
         (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
     )
@@ -39,8 +37,9 @@ abstract class BaseHandler<T : Any, R : Any> : FunctionInitializer, RequestStrea
         .jsonProvider(JacksonJsonNodeJsonProvider())
         .build()
 
-    override fun handleRequest(input: InputStream, output: OutputStream, context: Context?) {
-
+    override fun handleRequest(input: InputStream, output: OutputStream, context: Context) {
+        logger.info("CCCCCCCXXXXX")
+        println("CCCCCCCXXXXX")
         val inputStreamCopy = input.clone()
         if (logger.isTraceEnabled) {
             val text = inputStreamCopy.reader().readText()
